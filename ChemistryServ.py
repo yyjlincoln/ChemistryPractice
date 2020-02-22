@@ -354,5 +354,3 @@ def check():
             'code':-1,
             'msg':'Not found'
         }
-
-app.run()

@@ -38,8 +38,11 @@
 
 <script src="./jquery-3.4.1.min.js"></script>
 <script>
-    var serverURL = 'http://localhost:5000/' // https://apis.chem.teamerdev.xyz/
+    var serverURL = 'https://apis.chem.teamerdev.xyz/' // https://apis.chem.teamerdev.xyz/
     var word = ''
+    $.ready(()=>{
+        fetch()
+    })
     function reset(){
         setTimeout(()=>{
             top.location=''
