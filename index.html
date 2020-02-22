@@ -52,7 +52,7 @@
             $("#notification").text("")
             fetch()
         },1500)
-        $('#successrate').text(String(correct)+' out of '+String(correct+incorrect)+', '+String(correct/(correct+incorrect))+'% Correct.')
+        $('#successrate').text(String(correct)+' out of '+String(correct+incorrect)+', '+String(100*correct/(correct+incorrect))+'% Correct.')
     }
     function fetch(){
         $.get(serverURL+'next',{
