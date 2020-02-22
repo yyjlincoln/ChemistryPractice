@@ -18,7 +18,7 @@
                 </div>
                 <form id="eqinput" onSubmit="return osubmit(eqinput.equation.value);"
                     style="padding-top: 10px; padding-bottom: 10px; margin: 0px;">
-                    <input name="equation" type="text"
+                    <input id="equation" name="equation" type="text"
                         style="padding-top: 0px; padding-bottom: 0px; margin: 0px; width: 60%; height: 25px; min-width: 320px; margin-top: 10px; margin-bottom: 10px;" />
                     <button type="submit"
                         style="border: 0px; height: 25px; margin-top: 10px; margin-bottom: 10px;">Check</button>
@@ -42,8 +42,9 @@
     var word = ''
     function reset(){
         setTimeout(()=>{
-            $("#equation").val("")
+            $("#equation").val('')
             $("#question").text("Fetching...")
+            $("#notification").text("")
             fetch()
         },1500)
     }
@@ -58,6 +59,7 @@
                 console.log('0')
                 $("#question").text(data.word)
                 word = data.word
+                $("#equation").focus()
             }
         })
     }
