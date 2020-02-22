@@ -42,7 +42,9 @@
     var word = ''
     function reset(){
         setTimeout(()=>{
-            top.location=''
+            $("#equation").val("")
+            $("#question").text("Fetching...")
+            fetch()
         },1500)
     }
     function fetch(){
