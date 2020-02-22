@@ -257,25 +257,41 @@ for x in Substance['Pure substance']['Elements']:
 @app.route('/next')
 def nextWord():
     t = flask.request.values.get('type')
-    try:
-        t=int(t)
-    except:
+    if t:
+        try:
+            t=int(t)
+        except:
+            return {
+                'code':-1,
+                'msg':'Invalid type. Should be int'
+            }
+    else:
+        t=-1
+    
+    if t==0:
+        r=random.choice(e)
         return {
-            'code':-1,
-            'msg':'Invalid type. Should be int'
+            'code':0,
+            'word':r
         }
-
-    if random.randint(0,1) or t:
+    elif t==1:
         r=random.choice(c)
         return {
             'code':0,
             'word':r
         }
-    else:
-        r=random.choice(e)
-        return {
-            'word':r
-        }
+    elif t==-1:
+        if random.randint(0,1):
+            r=random.choice(c)
+            return {
+                'code':0,
+                'word':r
+            }
+        else:
+            r=random.choice(e)
+            return {
+                'word':r
+            }
 
 @app.route('/check')
 def check():

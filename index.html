@@ -42,7 +42,9 @@
     function fetch(){
         $.get(serverURL+'next',{
         }, (data)=>{
-            if 
+            if(data.code!=0){
+                $("#notification").text("error:"+data.msg)
+            }
         })
     }
     function osubmit(url) {
