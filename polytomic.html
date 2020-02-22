@@ -83,6 +83,7 @@
     }
     function fetch(){
         $.get(serverURL+'next',{
+            type: 1
         }, (data)=>{
             console.log(data.word,data.code)
             word=data.word
