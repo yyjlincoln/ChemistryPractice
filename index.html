@@ -40,9 +40,6 @@
 <script>
     var serverURL = 'https://apis.chem.teamerdev.xyz/' // https://apis.chem.teamerdev.xyz/
     var word = ''
-    $.ready(()=>{
-        fetch()
-    })
     function reset(){
         setTimeout(()=>{
             top.location=''
@@ -84,6 +81,7 @@
         })
         return false
     }
+    fetch()
 </script>
 
 </html>
