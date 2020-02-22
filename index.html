@@ -16,6 +16,9 @@
                 <div id="question">
                     Fetching...
                 </div>
+                <div id="successrate">
+                    0 out of 0, 0% Correct.
+                </div>
                 <form id="eqinput" onSubmit="return osubmit(eqinput.equation.value);"
                     style="padding-top: 10px; padding-bottom: 10px; margin: 0px;">
                     <input id="equation" name="equation" type="text" autocomplete="off"
@@ -38,6 +41,8 @@
 
 <script src="./jquery-3.4.1.min.js"></script>
 <script>
+    var correct = 0
+    var incorrect = 0
     var serverURL = 'https://apis.chem.teamerdev.xyz/' // https://apis.chem.teamerdev.xyz/
     var word = ''
     function reset(){
@@ -47,6 +52,7 @@
             $("#notification").text("")
             fetch()
         },1500)
+        $('#successrate').text(String(correct)+' out of '+String(correct+incorrect)+', '+String(correct/(correct+incorrect))+'% Correct.')
     }
     function fetch(){
         $.get(serverURL+'next',{
@@ -72,9 +78,11 @@
             if (data.code == 0) {
                 if(data.correct){
                     $('#notification').text('You are correct!')
+                    correct+=1
                     reset()
                 } else {
                     $('#notification').text('Incorrect, '+data.word+': Symbol '+data.symbol+', Charge '+data.charge)
+                    incorrect+=1
                     reset()
                 }
             } else {
