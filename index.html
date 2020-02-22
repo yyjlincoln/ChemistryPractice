@@ -13,10 +13,10 @@
                 <div>
                     Chemistry Practice
                 </div>
-                <div id="Question">
+                <div id="question">
                     Fetching...
                 </div>
-                <form id="urlinput" onSubmit="return osubmit(urlinput.url.value);"
+                <form id="eqinput" onSubmit="return osubmit(eqinput.equation.value);"
                     style="padding-top: 10px; padding-bottom: 10px; margin: 0px;">
                     <input name="equation" type="text"
                         style="padding-top: 0px; padding-bottom: 0px; margin: 0px; width: 60%; height: 25px; min-width: 320px; margin-top: 10px; margin-bottom: 10px;" />
@@ -38,24 +38,44 @@
 
 <script src="./jquery-3.4.1.min.js"></script>
 <script>
-        var serverURL = 'http://chem.teamerdev.xyz/'
+    var serverURL = 'http://localhost:5000/' // https://apis.chem.teamerdev.xyz/
+    var word = ''
+    function reset(){
+        setTimeout(()=>{
+            top.location=''
+        },1500)
+    }
     function fetch(){
         $.get(serverURL+'next',{
         }, (data)=>{
+            console.log(data.word,data.code)
+            word=data.word
             if(data.code!=0){
                 $("#notification").text("error:"+data.msg)
+            } else {
+                console.log('0')
+                $("#question").text(data.word)
+                word = data.word
             }
         })
     }
     function osubmit(url) {
         console.log(url)
-        $.post(serverURL, {
-            'originalURL': url
+        $.post(serverURL+'check', {
+            'word':word,
+            'equation': url
         }, (data) => {
             if (data.code == 0) {
-                $('#notification').text('All done! Here is your link: http://' + data.shortened)
+                if(data.correct){
+                    $('#notification').text('You are correct!')
+                    reset()
+                } else {
+                    $('#notification').text('Incorrect, '+data.word+': Symbol '+data.symbol+', Charge '+data.charge)
+                    reset()
+                }
             } else {
-                $('#notification').text('Error! (code:' + data.code + ', ErrorMsg:' + data.errmsg + '). Try again later.')
+                $('#notification').text('error:'+data.msg)
+                reset()
             }
             $('#notification').slideDown()
         })

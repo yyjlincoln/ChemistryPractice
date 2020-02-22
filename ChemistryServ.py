@@ -281,19 +281,13 @@ def nextWord():
             'word':r
         }
     elif t==-1:
-        if random.randint(0,1):
-            r=random.choice(c)
-            return {
-                'code':0,
-                'word':r
-            }
-        else:
-            r=random.choice(e)
-            return {
-                'word':r
-            }
+        r=random.choice(e+c)
+        return {
+            'code':0,
+            'word':r
+        }
 
-@app.route('/check')
+@app.route('/check', methods = ['GET','POST'])
 def check():
     w = flask.request.values.get('word')
     f = flask.request.values.get('equation')
@@ -361,3 +355,4 @@ def check():
             'msg':'Not found'
         }
 
+app.run()
