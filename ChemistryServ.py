@@ -437,8 +437,11 @@ class getCommand(threading.Thread):
         while True:
             rc = input('Input Command >')
             c = command.split(' ')
+            print(c)
             if c[0]=='score':
+                print('00')
                 if len(c)>1:
+                    print('000')
                     for x in range(1,len(c)):
                         if c[x] in scores:
                             print(scores[c[x]])
@@ -447,6 +450,7 @@ class getCommand(threading.Thread):
                 else:
                     print(scores)
             elif c[0]=='reset':
+                print('000')
                 if len(c)>1:
                     for x in range(1,len(c)):
                         if c[x] in scores:
@@ -457,7 +461,7 @@ class getCommand(threading.Thread):
                 else:
                     scores={}
             if rc.startswith('send '):
-                command = c[5:]
+                command = rc[5:]
 
 g = getCommand()
 g.setDaemon(True)
