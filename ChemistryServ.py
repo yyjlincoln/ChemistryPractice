@@ -68,9 +68,9 @@ Substance = {
                 'charge': -1,
                 'symbol': 'OH'
             },
-            'Flouride': {
+            'Fluoride': {
                 'charge': -1,
-                'symbol': 'Fl'
+                'symbol': 'F'
             },
             'Chloride': {
                 'charge': -1,
