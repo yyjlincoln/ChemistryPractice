@@ -12,7 +12,7 @@
             style="display: flex; flex-direction: row; justify-content: center; padding-left: 10%; padding-right: 10%;">
             <div style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
                 <div>
-                    Chemistry Practice - Polytomic ONLY
+                    Chemistry Practice - Polytmoic ONLY
                 </div>
                 <div id="question">
                     Fetching...
@@ -94,6 +94,9 @@
             $("#notification").text("")
             fetch()
         },1500)
+        updateSuccessRate()
+    }
+    function updateSuccessRate(){
         $('#successrate').text(String(correct)+' out of '+String(correct+incorrect)+', '+String(100*correct/(correct+incorrect))+'% Correct.')
     }
     function fetch(){
@@ -109,6 +112,9 @@
                 $("#question").text(data.word)
                 word = data.word
                 $("#equation").focus()
+                correct = data.setcorrect
+                incorrect = data.setincorrect
+                updateSuccessRate()
             }
         }).fail((xhr,stat,error)=>{
             $("#question").text("No Internet");

@@ -97,8 +97,11 @@
             $("#question").text("Fetching...")
             $("#notification").text("")
             fetch()
-        }, 1500)
-        $('#successrate').text(String(correct) + ' out of ' + String(correct + incorrect) + ', ' + String(100 * correct / (correct + incorrect)) + '% Correct.')
+        },1500)
+        updateSuccessRate()
+    }
+    function updateSuccessRate(){
+        $('#successrate').text(String(correct)+' out of '+String(correct+incorrect)+', '+String(100*correct/(correct+incorrect))+'% Correct.')
     }
     function fetch() {
         $.get(serverURL + 'next', {
@@ -113,6 +116,9 @@
                 $("#question").text(data.word)
                 word = data.word
                 $("#equation").focus()
+                correct = data.setcorrect
+                incorrect = data.setincorrect
+                updateSuccessRate()
             }
         }).fail((xhr, stat, error) => {
             $("#question").text("No Internet");

@@ -10,6 +10,7 @@ import threading
 app = flask.Flask(__name__)
 flask_cors.CORS(app)
 command = ''
+scores = {}
 
 Substance = {
     'Mixture': {
@@ -258,6 +259,9 @@ for x in Substance['Pure substance']['Elements']:
 
 @app.route('/next')
 def nextWord():
+    # 
+    ip = flask.request.headers.get('X-Real-IP')
+    # 
     t = flask.request.values.get('type')
     if t:
         try:
@@ -270,27 +274,43 @@ def nextWord():
     else:
         t=-1
     
+    #
+    if ip not in scores:
+        scores[ip] = {
+            'correct':0,
+            'incorrect':0
+        }
+    #
     if t==0:
         r=random.choice(e)
         return {
             'code':0,
-            'word':r
+            'word':r,
+            'setcorrect':scores[ip]['correct'],
+            'setincorrect':scores[ip]['incorrect']            
         }
     elif t==1:
         r=random.choice(c)
         return {
             'code':0,
-            'word':r
+            'word':r,
+            'setcorrect':scores[ip]['correct'],
+            'setincorrect':scores[ip]['incorrect']
         }
     elif t==-1:
         r=random.choice(e+c)
         return {
             'code':0,
-            'word':r
+            'word':r,
+            'setcorrect':scores[ip]['correct'],
+            'setincorrect':scores[ip]['incorrect']
         }
 
 @app.route('/check', methods = ['GET','POST'])
 def check():
+    # 
+    ip = flask.request.headers.get('X-Real-IP')
+    # 
     w = flask.request.values.get('word')
     f = flask.request.values.get('equation')
     if w in Substance['Pure substance']['Compounds']:
@@ -313,15 +333,37 @@ def check():
                     ifc=True
                 else:
                     ifc=False
-
+        #
+        if ifc:
+            if ip in scores:
+                scores[ip]['correct']+=1
+            else:
+                scores[ip] = {
+                    'correct':0,
+                    'incorrect':0
+                }
+                scores[ip]['correct']=1
+        else:
+            if ip in scores:
+                scores[ip]['incorrect']+=1
+            else:
+                scores[ip] = {
+                    'correct':0,
+                    'incorrect':0
+                }
+                scores[ip]['incorrect']=1
+        #
         return {
             'code':0,
             'word':w,
             'type':1,
             'symbol':Substance['Pure substance']['Compounds'][w]['symbol'],
             'charge':Substance['Pure substance']['Compounds'][w]['charge'],
-            'correct':ifc
+            'correct':ifc,
+            'setcorrect':scores[ip]['correct'],
+            'setincorrect':scores[ip]['incorrect']
         }
+
     elif w in Substance['Pure substance']['Elements']:
         ifc = False
         ans = Substance['Pure substance']['Elements'][w]
@@ -342,6 +384,26 @@ def check():
                     ifc=True
                 else:
                     ifc=False
+        #
+        if ifc:
+            if ip in scores:
+                scores[ip]['correct']+=1
+            else:
+                scores[ip] = {
+                    'correct':0,
+                    'incorrect':0
+                }
+                scores[ip]['correct']=1
+        else:
+            if ip in scores:
+                scores[ip]['incorrect']+=1
+            else:
+                scores[ip] = {
+                    'correct':0,
+                    'incorrect':0
+                }
+                scores[ip]['incorrect']=1
+        #
 
         return {
             'code':0,
@@ -349,7 +411,9 @@ def check():
             'type':0,
             'symbol':Substance['Pure substance']['Elements'][w]['symbol'],
             'charge':Substance['Pure substance']['Elements'][w]['charge'],
-            'correct':ifc
+            'correct':ifc,
+            'setcorrect':scores[ip]['correct'],
+            'setincorrect':scores[ip]['incorrect']
         }
     else:
         return {
