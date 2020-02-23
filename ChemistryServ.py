@@ -5,9 +5,11 @@ import os
 import time
 import flask
 import flask_cors
+import threading
 
 app = flask.Flask(__name__)
 flask_cors.CORS(app)
+command = ''
 
 Substance = {
     'Mixture': {
@@ -354,3 +356,26 @@ def check():
             'code':-1,
             'msg':'Not found'
         }
+
+@app.route('/getEvents')
+def getEvents():
+    return {
+        'code':0,
+        'command':command
+    }
+
+class getCommand(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+    
+    def start(self):
+        global command
+        while True:
+            command = input('Input Command >')
+            if command=='exit':
+                exit()
+                break
+
+g = getCommand()
+g.setDaemon(True)
+g.run()

