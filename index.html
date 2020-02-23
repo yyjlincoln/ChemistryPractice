@@ -95,8 +95,8 @@
                 word = data.word
                 $("#equation").focus()
             }
-        }).fail((f)=>{
-            $("#question").text("Error:"+f)
+        }).fail((xhr,stat,error)=>{
+            $("#question").text("Error:"+error)
         })
     }
     function osubmit(url) {
@@ -120,8 +120,8 @@
                 reset()
             }
             $('#notification').slideDown()
-        }).fail((f)=>{
-            $("#question").text("Error:"+f)
+        }).fail((xhr,stat,error)=>{
+            $("#question").text("Error:"+error)
         })
         return false
     }
