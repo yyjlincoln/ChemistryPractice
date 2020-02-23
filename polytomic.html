@@ -97,7 +97,8 @@
                 $("#equation").focus()
             }
         }).fail((xhr,stat,error)=>{
-            $("#question").text("Error:"+error)
+            $("#question").text("No Internet");
+            alert('Can not perform your request at this time. Check your internet connection and try again later.')
         })
     }
     function osubmit(url) {
@@ -122,7 +123,8 @@
             }
             $('#notification').slideDown()
         }).fail((xhr,stat,error)=>{
-            $("#question").text("Error:"+error)
+            $("#question").text("No Internet");
+            alert('Can not perform your request at this time. Check your internet connection and try again later.')
         })
         return false
     }
