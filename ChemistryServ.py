@@ -433,12 +433,32 @@ class getCommand(threading.Thread):
         threading.Thread.__init__(self)
     
     def run(self):
-        global command
+        global command, scores
         while True:
-            command = input('Input Command >')
-            if command=='exit':
-                exit()
-                break
+            rc = input('Input Command >')
+            c = command.split(' ')
+            if len(c)>=1:
+                if c[0]=='score':
+                    if len(c)>1:
+                        for x in range(1,len(c)):
+                            if c[x] in scores:
+                                print(scores[c[x]])
+                            else:
+                                print(c[x],'not found.')
+                    else:
+                        print(scores)
+                elif c[0]=='reset':
+                    if len(c)>1:
+                        for x in range(1,len(c)):
+                            if c[x] in scores:
+                                print(scores[c[x]],'=>','{}')
+                                scores[c[x]] = {}
+                            else:
+                                print(c[x],'not found.')                    
+                    else:
+                        scores={}
+            if rc.startswith('send '):
+                command = c[5:]
 
 g = getCommand()
 g.setDaemon(True)
