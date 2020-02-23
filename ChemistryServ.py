@@ -368,7 +368,7 @@ class getCommand(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
     
-    def start(self):
+    def run(self):
         global command
         while True:
             command = input('Input Command >')
@@ -378,4 +378,4 @@ class getCommand(threading.Thread):
 
 g = getCommand()
 g.setDaemon(True)
-g.run()
+g.start()
