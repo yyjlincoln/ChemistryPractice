@@ -437,7 +437,7 @@ class getCommand(threading.Thread):
         while True:
             rc = input('Input Command >')
             c = rc.split(' ')
-            print(c)
+            # print(c)
             if c[0]=='score':
                 if len(c)>1:
                     for x in range(1,len(c)):
