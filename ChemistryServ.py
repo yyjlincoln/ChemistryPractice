@@ -436,12 +436,10 @@ class getCommand(threading.Thread):
         global command, scores
         while True:
             rc = input('Input Command >')
-            c = command.split(' ')
+            c = rc.split(' ')
             print(c)
             if c[0]=='score':
-                print('00')
                 if len(c)>1:
-                    print('000')
                     for x in range(1,len(c)):
                         if c[x] in scores:
                             print(scores[c[x]])
@@ -450,7 +448,6 @@ class getCommand(threading.Thread):
                 else:
                     print(scores)
             elif c[0]=='reset':
-                print('000')
                 if len(c)>1:
                     for x in range(1,len(c)):
                         if c[x] in scores:
