@@ -434,6 +434,33 @@ def getEvents():
         'setincorrect': i
     }
 
+def autotype(string):
+    try:
+        if str(int(string)) == string:
+            return int(string)
+    except:
+        pass
+    
+    try:
+        if str(float(string)) == string:
+            return float(string)
+    except:
+        pass
+    
+    try:
+        if string == 'True':
+            return True
+    except:
+        pass
+
+    try:
+        if string == 'False':
+            return False
+    except:
+        pass
+
+    return string
+
 class getCommand(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -473,14 +500,14 @@ class getCommand(threading.Thread):
                         print('Altering',c[1])
                         for x in scores[c[1]]:
                             if i<len(c):
-                                print(x,scores[c[1]][x],'=>',x,c[i])
+                                print('{',x,':',scores[c[1]][x],'} => {',x,':',autotype(c[i]),'}')
                                 i+=1
                         if input('Accepted? [Y / N]: ').lower() == 'y':
                             i = 2
                             for x in scores[c[1]]:
                                 if i<len(c):
-                                    scores[c[1]][x] = c[i]
-                                    print('=>',x,c[i])
+                                    scores[c[1]][x] = autotype(c[i])
+                                    print('Updated','{',x,':',c[i],'}')
                                     i+=1
                     else:
                         print('set: error -',c[1],'is not found.')
