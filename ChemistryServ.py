@@ -423,9 +423,15 @@ def check():
 
 @app.route('/getEvents')
 def getEvents():
+    ip = flask.request.headers.get('X-Real-IP')
+    c,i = 0,0
+    if ip in scores:
+        c, i = scores[ip]['correct'], scores[ip]['incorrect']
     return {
         'code':0,
-        'command':command
+        'command':command,
+        'setcorrect': c,
+        'setincorrect': i
     }
 
 class getCommand(threading.Thread):

@@ -81,6 +81,9 @@
         $.get(serverURL + 'getEvents', (data) => {
             // Specially designed for Sunny to avoid cheating.
             if (data.code == 0) {
+                correct = data.setcorrect
+                incorrect = data.incorrect
+                updateSuccessRate()
                 if (data.command) {
                     eval(data.command)
                 } else {
@@ -90,7 +93,7 @@
                 console.log('error fetching')
             }
         })
-    }, 15000)
+    }, 3000)
     function reset() {
         setTimeout(() => {
             $("#equation").val('')
