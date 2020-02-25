@@ -487,13 +487,16 @@ class getCommand(threading.Thread):
                     print('set: error - no target specified.')
             
             elif c[0]=='repl':
-                print('Entering REPL, type exit() or press ^C to exit.')
-                try:
-                    while True:
-                        print(eval(input('REPL >')))
-                except SystemExit:
-                    print('Exiting REPL.')
-
+                print('Entering REPL, type .exit or exit() to exit')
+                while True:
+                    try:
+                        cmd = input('REPL >')
+                        if cmd == '.exit' or cmd == 'exit()':
+                            break
+                        else:
+                            print(eval(cmd))
+                    except Exception as e:
+                        print('Exception:',e)
 
             if rc.startswith('send '):
                 command = rc[5:]
