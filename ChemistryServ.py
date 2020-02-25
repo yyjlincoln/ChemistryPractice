@@ -472,12 +472,12 @@ class getCommand(threading.Thread):
                         i = 0
                         print('Altering',c[1])
                         for x in scores:
-                            if i<len(c-2):
+                            if i<len(c)-2:
                                 print(x,scores[c[1]][x],'=>',x,c[i])
                                 i+=1
                         if input('Accepted? [Y / N]').lower() == 'y':
                             for x in scores:
-                                if i<len(c-2):
+                                if i<len(c)-2:
                                     scores[c[1]][x] = c[i]
                                     print('=>',x,c[i])
                                     i+=1
