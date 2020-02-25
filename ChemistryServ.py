@@ -458,11 +458,43 @@ class getCommand(threading.Thread):
                     for x in range(1,len(c)):
                         if c[x] in scores:
                             print(scores[c[x]],'=>','{}')
-                            scores[c[x]] = {}
+                            scores[c[x]] = {
+                                'correct':0,
+                                'incorrect':0
+                            }
                         else:
                             print(c[x],'not found.')                    
                 else:
                     scores={}
+            elif c[0]=='set':
+                if len(c)>2:
+                    if c[1] in scores:
+                        i = 0
+                        print('Altering',c[1])
+                        for x in scores:
+                            if i<len(c-2):
+                                print(x,scores[c[1]][x],'=>',x,c[i])
+                                i+=1
+                        if input('Accepted? [Y / N]').lower() == 'y':
+                            for x in scores:
+                                if i<len(c-2):
+                                    scores[c[1]][x] = c[i]
+                                    print('=>',x,c[i])
+                                    i+=1
+                    else:
+                        print('set: error -',c[1],'is not found.')
+                else:
+                    print('set: error - no target specified.')
+            
+            elif c[0]=='repl':
+                print('Entering REPL, type exit() or press ^C to exit.')
+                try:
+                    while True:
+                        print(eval(input('REPL >')))
+                except SystemExit:
+                    print('Exiting REPL.')
+
+
             if rc.startswith('send '):
                 command = rc[5:]
 
